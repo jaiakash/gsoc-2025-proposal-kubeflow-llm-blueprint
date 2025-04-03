@@ -95,13 +95,13 @@ The scope of this project is set up on OKE, but theoretically, this is platform-
 
 ## Technical Details
 
-### TechStack 
+### TechStack
 
 GitHub Actions (and ACR), Kubernetes, Oracle Cloud, PyTorch, Python, Nvidia drivers, Linux
 
 ### Setup LLM Blueprint (Milestone 1 (June 2 - June 10))
 To set up the LLM blueprint that can triggered based on admin approval. We have already one sample on in trainer repo, [here](https://github.com/kubeflow/trainer/blob/master/examples/deepspeed/text-summarization/T5-Fine-Tuning.ipynb)
-I have tested a sample project for running on my local system.
+I have tested a sample project for running on my local system. I will adding 2-3 base models of different requirements for our testing.
 
 Here is the branch - [test-self-runner](https://github.com/jaiakash/trainer/tree/test-runner)
 
@@ -112,20 +112,82 @@ Create a GitHub action for checking changes in files in `trainer/example/self-ru
 
 ![image](https://github.com/user-attachments/assets/6cd595fe-4191-49f2-a897-cb8895d86438)
 
-### Setup OKE Cluster (Milestone 3 (June 21 - July 6))
+```
+name: Check llm changes and run on self-runner infra
+
+on:
+  pull_request:
+    paths:
+      - 'examples/self-runner/**'
+
+jobs:
+  request-approval:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Request maintainer approval
+        uses: hmarr/auto-approve-action@v3
+        if: github.event.pull_request.user.login == 'jaiakash'
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  wait-for-approval:
+    needs: request-approval
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for maintainer approval
+        uses: hmarr/auto-approve-action@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  run-llm-code-on-akash:
+    needs: wait-for-approval
+    runs-on: self-runner
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run LLM code on akash pc
+        run: |
+          echo "triggered"
+```
+
+### Setup OKE Cluster with GPU (Milestone 3 (June 21 - July 6))
+
+Here in this milestone I will setting up OKE Cluster with GPU node. 
+
+System: Ubuntu 22.04
+
+One good thing about OKE is that it has GPU image preinstalled
+
+Accessing Cluster
+- OKE can be accessed with kubeconfig file
+- Or via bastian
+
+![image](https://github.com/user-attachments/assets/35e1134a-0ce6-4b02-a732-c16a8f9efece)
+
+> [!NOTE]  
+> The GPU image has the GPU drivers pre-installed.
+
+**Images for NVIDIA shapes**
+
+- [GPU driver 570 & CUDA 12.8](https://objectstorage.ca-montreal-1.oraclecloud.com/p/ts6fjAuj7hY4io5x_jfX3fyC70HRCG8-9gOFqAjuF0KE0s-6tgDZkbRRZIbMZmoN/n/hpc_limited_availability/b/images/o/Canonical-Ubuntu-22.04-2024.10.04-0-OCA-OFED-24.10-1.1.4.0-GPU-570-CUDA-12.8-2025.03.26-0)
+
+- [GPU driver 560 & CUDA 12.6](https://objectstorage.ca-montreal-1.oraclecloud.com/p/ts6fjAuj7hY4io5x_jfX3fyC70HRCG8-9gOFqAjuF0KE0s-6tgDZkbRRZIbMZmoN/n/hpc_limited_availability/b/images/o/Canonical-Ubuntu-22.04-2024.10.04-0-OCA-OFED-24.10-1.1.4.0-GPU-560-CUDA-12.6-2025.03.26-0)
+
+- [GPU driver 550 & CUDA 12.4](https://objectstorage.ca-montreal-1.oraclecloud.com/p/ts6fjAuj7hY4io5x_jfX3fyC70HRCG8-9gOFqAjuF0KE0s-6tgDZkbRRZIbMZmoN/n/hpc_limited_availability/b/images/o/Canonical-Ubuntu-22.04-2024.10.04-0-OCA-OFED-24.10-1.1.4.0-GPU-550-CUDA-12.4-2025.03.26-0)
+
 Reference - https://github.com/oracle-quickstart/oci-hpc-oke
+            https://blogs.oracle.com/java/post/create-k8s-clusters-and-deply-to-oci-from-vscode
 
 ### Buffer period (Buffer period (July 7 - July 13))
 This buffer period is for covering any backlogs and blockers. This time, I will utilise it to cover any pending changes and fixes. I will also try to demo in of community call.
 One of the agendas in this buffer period is to write a blog about the progress and status of the current project. Till this time, the main project would have been completed.
 
-
 ### Setup GitHub Actions Runner Controller (ACR) (Milestone 4 (July 19 - July 27))
-Actions Runner Controller (ARC) is a Kubernetes operator that orchestrates and scales self-hosted runners for GitHub Actions. This is advanced version of k8s operator that is useful for our requirments to scale and orchetrates pods based on the action CI. 
+[Actions Runner Controller (ARC)](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners-with-actions-runner-controller/about-actions-runner-controller) is a Kubernetes operator that orchestrates and scales self-hosted runners for GitHub Actions. This is advanced phase of our projecr where we use k8s operator that is useful to scale and orchetrates pods based on the action CI.
 
 ACR architecture
 ![Diagram Export Apr 3 2025](https://github.com/user-attachments/assets/9d97113a-a007-458d-b22c-1a0e9be11974)
-
 
 ### OKE Monitoring (Milestone 5 (July 28 - August 10))
 For admins, we also need to maintain monitoring to see the metrics and resource utilisation of the OKE infra. Oracle already provides an open-source sample for [OKE Monitoring](https://github.com/oracle-quickstart/oci-kubernetes-monitoring), so we can leverage that. 
@@ -160,7 +222,7 @@ Local machine with 32GB RAM, 1640ti GPU, Ryzen 7 8700G
 - **Milestone 1 (June 2 - June 10)**: Setup sample LLM Blueprint
 
 - **Milestone 2 (June 11 - June 20)**: Setup Github Action for manual trigger and runner on OKE cluster
-    
+
 - **Milestone 3 (June 21 - July 6 )**: Setup GPU nodes on OKE
 
 - **Buffer Period (July 7 - July 13 )**: Buffer period for any backlogs and blogs
