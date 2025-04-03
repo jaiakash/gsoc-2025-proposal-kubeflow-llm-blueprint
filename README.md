@@ -93,6 +93,28 @@ The scope of this project is set up on OKE, but theoretically, this is platform-
 - Cluster with GPU should be provided by Oracle for prod deployment. For testing, I have my decent enough personal machine (Ryzen 7 8600G, 32GB RAM, Nvidia RTX 4060) to test this.
 - Once the infra for self-runner is set up, running AI Playground requires minimal setup. The main scope of this project is to set infra for running the LLM blueprint on OKE infra. AI Playground is 2nd priority for this GSoC project, but I will continue if it's not complete within the GSoC period.
 
+## Estimation of Deliverables
+
+- **Milestone 0 (May 8 - June 1)**: Community Bonding Period
+
+- **[Milestone 1 (June 2 - June 10): Setup sample LLM Blueprint](#setup-llm-blueprint-milestone-1-june-2---june-10)**
+
+- **[Milestone 2 (June 11 - June 20): Setup Github Action](#github-action-milestone-2-june-11---june-20)** 
+
+- **[Milestone 3 (June 21 - July 6): Setup GPU nodes on OKE](#setup-oke-cluster-with-gpu-milestone-3-june-21---july-6)**
+
+- **[Buffer Period (July 7 - July 13)](#buffer-period-buffer-period-july-7---july-13)**
+
+- **Midterm Evaluation (July 14 - July 18)**
+
+- **[Milestone 4 (July 19 - July 27): Setup ACR on OKE Cluster](#setup-github-actions-runner-controller-acr-milestone-4-july-19---july-27)**
+
+- **[Milestone 5 (July 28 - August 10): Metrics and analytics](#oke-monitoring-milestone-5-july-28---august-10)**
+
+- **[Milestone 6 (August 11 - August 24): AI Playground on OKE](#ai-playground-milestone-6-august-11---august-24)**
+
+- **Final Submission (Aug 25 - Sept 1)**
+
 ## Technical Details
 
 ### TechStack
@@ -214,28 +236,6 @@ This is the final phase of the project, with LLM CI deployment, as in various Ku
 [Describe how you plan to test your code to ensure its quality and correctness.]
 
 Local machine with 32GB RAM, 1640ti GPU, Ryzen 7 8700G
-
-## Estimation of Deliverables
-
-- **Milestone 0 (May 8 - June 1)**: Community Bonding Period
-
-- **Milestone 1 (June 2 - June 10)**: Setup sample LLM Blueprint
-
-- **Milestone 2 (June 11 - June 20)**: Setup Github Action for manual trigger and runner on OKE cluster
-
-- **Milestone 3 (June 21 - July 6 )**: Setup GPU nodes on OKE
-
-- **Buffer Period (July 7 - July 13 )**: Buffer period for any backlogs and blogs
-
-- **Midterm Evaluation (July 14 - July 18)**: Midterm Evaluation for the project
-
-- **Milestone 4 (July 19 - July 27)**: Setup ACR on OKE Cluster for deploying the llm
-
-- **Milestone 5 (July 28 - August 10)**: Metrics and analytics for the GPU Cluster
-
-- **Milestone 6 (August 11 - August 24)**: [Optional] AI Playground on OKE
-
-- **Final Submission (Aug 25 - Sept 1)**: Final Submission for the project
 
 ## Reference
 
