@@ -139,33 +139,32 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-  run-llm-code-on-akash:
+  run-llm-code-on-oke-infra:
     needs: wait-for-approval
     runs-on: self-runner
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Run LLM code on akash pc
+      - name: Run LLM code on OKE Infra
         run: |
-          echo "triggered"
+          echo "Running on OKE infra"
 ```
 
 ### Setup OKE Cluster with GPU (Milestone 3 (June 21 - July 6))
 
 Here in this milestone I will setting up OKE Cluster with GPU node. 
 
-System: Ubuntu 22.04
-
 One good thing about OKE is that it has GPU image preinstalled
 
 Accessing Cluster
-- OKE can be accessed with kubeconfig file
-- Or via bastian
+- OKE can be accessed with `kubeconfig` file
+- Or via Bastian
 
 ![image](https://github.com/user-attachments/assets/35e1134a-0ce6-4b02-a732-c16a8f9efece)
 
-> [!NOTE]  
+System: Ubuntu 22.04
+
 > The GPU image has the GPU drivers pre-installed.
 
 **Images for NVIDIA shapes**
@@ -176,15 +175,16 @@ Accessing Cluster
 
 - [GPU driver 550 & CUDA 12.4](https://objectstorage.ca-montreal-1.oraclecloud.com/p/ts6fjAuj7hY4io5x_jfX3fyC70HRCG8-9gOFqAjuF0KE0s-6tgDZkbRRZIbMZmoN/n/hpc_limited_availability/b/images/o/Canonical-Ubuntu-22.04-2024.10.04-0-OCA-OFED-24.10-1.1.4.0-GPU-550-CUDA-12.4-2025.03.26-0)
 
-Reference - https://github.com/oracle-quickstart/oci-hpc-oke
-            https://blogs.oracle.com/java/post/create-k8s-clusters-and-deply-to-oci-from-vscode
+* Reference 
+	* https://github.com/oracle-quickstart/oci-hpc-oke
+	* https://blogs.oracle.com/java/post/create-k8s-clusters-and-deply-to-oci-from-vscode
 
 ### Buffer period (Buffer period (July 7 - July 13))
 This buffer period is for covering any backlogs and blockers. This time, I will utilise it to cover any pending changes and fixes. I will also try to demo in of community call.
 One of the agendas in this buffer period is to write a blog about the progress and status of the current project. Till this time, the main project would have been completed.
 
 ### Setup GitHub Actions Runner Controller (ACR) (Milestone 4 (July 19 - July 27))
-[Actions Runner Controller (ARC)](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners-with-actions-runner-controller/about-actions-runner-controller) is a Kubernetes operator that orchestrates and scales self-hosted runners for GitHub Actions. This is advanced phase of our projecr where we use k8s operator that is useful to scale and orchetrates pods based on the action CI.
+[Actions Runner Controller (ARC)](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners-with-actions-runner-controller/about-actions-runner-controller) is a Kubernetes operator that orchestrates and scales self-hosted runners for GitHub Actions. This is advanced phase of our project where we use k8s operator that is useful to scale and orchetrates pods based on the action CI.
 
 ACR architecture
 ![Diagram Export Apr 3 2025](https://github.com/user-attachments/assets/9d97113a-a007-458d-b22c-1a0e9be11974)
@@ -206,7 +206,7 @@ Estimated monthly cost: $0/month
 ![OKE monitoring](https://github.com/oracle-quickstart/oci-kubernetes-monitoring/blob/main/logan/images/kubernetes-cluster-summary-dashboard.png)
 
 ### AI Playground (Milestone 6 (August 11 - August 24))
-Setup sample playground where user can deploy llm models and fine tune quicky using KubeFlow and OKE infra.
+This is the final phase of the project, with LLM CI deployment, as in various KubeCons various users wanted to deploy a model quick to test and run KubeFlow. The idea to setup sample models where user can Open Kubeflow Jupyter Notebook -> select Kubeflow LLM blueprint -> fine-tune model with Kubeflow Trainer -> serve it with Kubeflow KServe. We will set up similar GitHub action for it during events. 
 
 
 ## Test Plan
